@@ -27,12 +27,19 @@
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"], textarea {
-            width: 100%;
+        button {
+            display: inline-block;
             padding: 10px;
-            font-size: 1rem;
-            border-radius: 5px;
+            margin: 5px;
+            background-color: #f0f0f0;
             border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button.selected {
+            background-color: #007BFF;
+            color: white;
         }
         input[type="submit"] {
             background-color: #007BFF;
@@ -58,17 +65,67 @@
                 <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="question1">주 5일 출근의 원동력은 무엇인가요?</label>
-                <textarea id="question1" name="question1" rows="4" required></textarea>
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" name="nickname" required>
             </div>
+
+            <!-- 질문 1 -->
             <div class="form-group">
-                <label for="question2">재택근무를 효율적으로 할 수 있는 방법이 있나요?</label>
-                <textarea id="question2" name="question2" rows="4" required></textarea>
+                <label for="question1">Q1. 일할 때 당신을 잘 나타낸다고 생각하는 단어 5개를 눌러주세요.</label>
+                <div id="words-container">
+                    <!-- 선택 가능한 단어들 -->
+                    <button type="button" class="word">책임감</button>
+                    <button type="button" class="word">신뢰성</button>
+                    <button type="button" class="word">창의성</button>
+                    <button type="button" class="word">결단력</button>
+                    <button type="button" class="word">협동심</button>
+                    <button type="button" class="word">공감력</button>
+                    <button type="button" class="word">주도성</button>
+                    <button type="button" class="word">열정</button>
+                    <button type="button" class="word">적응력</button>
+                    <button type="button" class="word">긍정적 태도</button>
+                    <button type="button" class="word">분석력</button>
+                    <button type="button" class="word">전략적 사고</button>
+                    <button type="button" class="word">계획성</button>
+                    <button type="button" class="word">문제 해결 능력</button>
+                    <button type="button" class="word">의사소통 능력</button>
+                    <button type="button" class="word">시간 관리 능력</button>
+                    <button type="button" class="word">리더십</button>
+                    <button type="button" class="word">동기 부여 능력</button>
+                    <button type="button" class="word">성실함</button>
+                    <button type="button" class="word">인내심</button>
+                    <button type="button" class="word">학습 능력</button>
+                    <button type="button" class="word">변화 관리 능력</button>
+                    <button type="button" class="word">유연성</button>
+                    <button type="button" class="word">통찰력</button>
+                    <button type="button" class="word">고객 지향성</button>
+                    <button type="button" class="word">세심함</button>
+                    <button type="button" class="word">책임감 있는 행동</button>
+                    <button type="button" class="word">목표 지향적</button>
+                    <button type="button" class="word">멀티태스킹 능력</button>
+                    <button type="button" class="word">위험 감수 능력</button>
+                    <button type="button" class="word">신속한 결정 능력</button>
+                    <button type="button" class="word">자기 통제력</button>
+                    <button type="button" class="word">충실함</button>
+                    <button type="button" class="word">진취성</button>
+                    <button type="button" class="word">타협 능력</button>
+                    <button type="button" class="word">조정 능력</button>
+                    <button type="button" class="word">자기 계발 능력</button>
+                    <button type="button" class="word">정직함</button>
+                    <button type="button" class="word">설득력</button>
+                    <button type="button" class="word">집중력</button>
+                    <button type="button" class="word">논리적 사고</button>
+                    <button type="button" class="word">열의</button>
+                    <button type="button" class="word">정서적 지능</button>
+                    <button type="button" class="word">팀워크</button>
+                    <button type="button" class="word">윤리의식</button>
+                    <button type="button" class="word">창의적 문제 해결 능력</button>
+                    <button type="button" class="word">협상 능력</button>
+                    <button type="button" class="word">성과 지향성</button>
+                    <button type="button" class="word">결과 중심적 사고</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="question3">현재 직장에서 이루고 싶은 목표는 무엇인가요?</label>
-                <textarea id="question3" name="question3" rows="4" required></textarea>
-            </div>
+
             <input type="submit" value="제출">
         </form>
         <div id="result" style="margin-top: 20px; display:none;">
@@ -84,21 +141,49 @@
             emailjs.init("aALkL8AlJE4CT6s-p");  // 퍼블릭 키로 초기화
         })();
 
+        // 선택한 단어 관리
+        let selectedWords = [];
+        const maxSelection = 5;
+
+        // 단어 클릭 시 선택/해제 기능
+        document.querySelectorAll(".word").forEach(button => {
+            button.addEventListener("click", function() {
+                if (button.classList.contains("selected")) {
+                    button.classList.remove("selected");
+                    selectedWords = selectedWords.filter(word => word !== button.innerText);
+                } else {
+                    if (selectedWords.length < maxSelection) {
+                        button.classList.add("selected");
+                        selectedWords.push(button.innerText);
+                    } else {
+                        alert("최대 5개까지만 선택할 수 있습니다.");
+                    }
+                }
+            });
+        });
+
         document.getElementById("surveyForm").addEventListener("submit", function(event){
             event.preventDefault();
 
+            if (selectedWords.length === 0) {
+                alert("단어를 선택해 주세요.");
+                return;
+            }
+
             // 폼 데이터 수집
             let name = document.getElementById("name").value;
-            let question1 = document.getElementById("question1").value;
+            let nickname = document.getElementById("nickname").value;
+            let question1 = selectedWords.join(", ");
             let question2 = document.getElementById("question2").value;
             let question3 = document.getElementById("question3").value;
 
             // EmailJS로 이메일 보내기
             emailjs.send("service_gg7rs8l", "template_gnitzl8", {
-                from_name: name,
-                answer_1: question1,
-                answer_2: question2,
-                answer_3: question3
+                from_name: name,           // 이름 필드
+                nickname: nickname,        // 닉네임 필드
+                answer_1: question1,       // 선택한 단어들 (콤마로 구분)
+                answer_2: question2,       // 두 번째 질문의 답변
+                answer_3: question3        // 세 번째 질문의 답변
             })
             .then(function(response) {
                 console.log("이메일 전송 성공", response.status, response.text);
