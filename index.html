@@ -79,7 +79,19 @@
 
             <!-- Q1 질문 -->
             <div class="form-group">
-                <label for="question1">Q1. 일할 때 당신을 잘 나타낸다고 생각하는 단어 5개를 눌러주세요.</label>
+                <label for="question1">Q1. 재택근무를 효율적으로 할 수 있는 방법이 있나요?</label>
+                <textarea id="question1" name="question1" rows="4" required></textarea>
+            </div>
+
+            <!-- Q2 질문 -->
+            <div class="form-group">
+                <label for="question2">Q2. 현재 직장에서 이루고 싶은 목표는 무엇인가요?</label>
+                <textarea id="question2" name="question2" rows="4" required></textarea>
+            </div>
+
+            <!-- Q3 질문 (단어 선택) -->
+            <div class="form-group">
+                <label for="question3">Q3. 일할 때 당신을 잘 나타낸다고 생각하는 단어 5개를 눌러주세요.</label>
                 <div id="words-container">
                     <!-- 선택 가능한 50개 단어들 -->
                     <button type="button" class="word">책임감</button>
@@ -134,18 +146,6 @@
                 </div>
             </div>
 
-            <!-- Q2 질문 추가 -->
-            <div class="form-group">
-                <label for="question2">Q2. 재택근무를 효율적으로 할 수 있는 방법이 있나요?</label>
-                <textarea id="question2" name="question2" rows="4" required></textarea>
-            </div>
-
-            <!-- Q3 질문 추가 -->
-            <div class="form-group">
-                <label for="question3">Q3. 현재 직장에서 이루고 싶은 목표는 무엇인가요?</label>
-                <textarea id="question3" name="question3" rows="4" required></textarea>
-            </div>
-
             <input type="submit" value="제출">
         </form>
         <div id="result" style="margin-top: 20px; display:none;">
@@ -198,17 +198,17 @@
             // 폼 데이터 수집
             let name = document.getElementById("name").value;
             let nickname = document.getElementById("nickname").value;
-            let question1 = selectedWords.join(", ");
+            let question1 = document.getElementById("question1").value;
             let question2 = document.getElementById("question2").value;
-            let question3 = document.getElementById("question3").value;
+            let question3 = selectedWords.join(", ");
 
             // EmailJS로 이메일 보내기
             emailjs.send("service_gg7rs8l", "template_gnitzl8", {
                 from_name: name,           // 이름 필드
                 nickname: nickname,        // 닉네임 필드
-                answer_1: question1,       // 선택한 단어들 (콤마로 구분)
+                answer_1: question1,       // 첫 번째 질문의 답변
                 answer_2: question2,       // 두 번째 질문의 답변
-                answer_3: question3        // 세 번째 질문의 답변
+                answer_3: question3        // 선택한 단어들 (콤마로 구분)
             })
             .then(function(response) {
                 console.log("이메일 전송 성공", response.status, response.text);
